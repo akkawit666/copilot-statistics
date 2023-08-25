@@ -3,8 +3,9 @@
   "displayName": "GitHub Copilot Stats",
   "repository": "https://github.com/akkawit666/copilot-statistics.git",
   "publisher": "CopilotStatistics",
+  "icon": "images/icon.png",
   "description": "จับการเปลี่ยนแปลงที่เกิดจากการใช้ IntelliSense หรือ Tab autocomplete",
-  "version": "1.1.3",
+  "version": "1.1.4",
   "engines": {
     "vscode": "^1.81.0"
   },
