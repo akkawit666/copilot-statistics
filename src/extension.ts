@@ -102,9 +102,10 @@ function registerSuggestionListener() {
             copilotSuggestionsWordsCount += currentLengthChange;
             statusBarItem.text = 'Copilot Suggestions: ' + copilotSuggestionsCount + ' (' + copilotSuggestionsWordsCount + ' words)';
     
-            axios.post('https://betimes-social-listening-app.demotoday.net/api/v1/copilot-stats', {
+            axios.post('https://betimes-social-listening-app.demotoday.net/api/v2/copilot-stats', {
               apiKey: currentSecret,
-              wordsCount: currentLengthChange
+              wordsCount: currentLengthChange,
+              folderName: currentFolderName
             }).then((response) => {
               console.log(response.data);
             }, (error) => {

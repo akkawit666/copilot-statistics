@@ -5,7 +5,7 @@
   "publisher": "CopilotStatistics",
   "icon": "images/icon.png",
   "description": "จับการเปลี่ยนแปลงที่เกิดจากการใช้ IntelliSense หรือ Tab autocomplete",
-  "version": "1.1.4",
+  "version": "1.2.4",
   "engines": {
     "vscode": "^1.81.0"
   },
