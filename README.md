@@ -29,6 +29,9 @@ This Visual Studio Code extension tracks and displays statistics about your usag
 
 ## Change Log
 
+### Version 1.2.5
+- Improved stability and performance in data handling and API integration.
+
 ### Version 1.2.4
 - **New Feature**: Added time tracking functionality to log time spent in each project folder.
 - **Enhancement**: Automatic data sending feature implemented for time tracking data.

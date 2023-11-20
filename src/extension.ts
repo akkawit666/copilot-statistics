@@ -26,18 +26,20 @@ function updateFolderTime() {
   if (currentFolderStartTime && currentFolderName) {
     const duration = currentFolderEndTime.getTime() - currentFolderStartTime.getTime();
     // ส่งข้อมูลไปยังเซิร์ฟเวอร์
-    axios.post('https://betimes-social-listening-app.demotoday.net/api/v1/time-tracking',
+    if (duration > 0)
     {
-      apiKey: currentSecret,
-      folderName: currentFolderName,
-      duration: duration
-    }).then(response => {
-      console.log('Time tracked successfully.');
-    }).catch(error => {
-      console.error('Error tracking time:', error);
-    });
-    console.log('Folder: ' + currentFolderName + ' - Duration: ' + duration + ' ms');
-    
+      axios.post('https://betimes-social-listening-app.demotoday.net/api/v1/time-tracking',
+      {
+        apiKey: currentSecret,
+        folderName: currentFolderName,
+        duration: duration
+      }).then(response => {
+        console.log('Time tracked successfully.');
+      }).catch(error => {
+        console.error('Error tracking time:', error);
+      });
+    }
+  
   }
   currentFolderStartTime = currentFolderEndTime;
   currentFolderName = getCurrentFolderName();
@@ -111,6 +113,8 @@ function registerSuggestionListener() {
             }, (error) => {
               vscode.window.showErrorMessage(error);
             });
+
+            updateFolderTime();
           }
         }
   
