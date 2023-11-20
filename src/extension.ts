@@ -18,6 +18,31 @@ let copilotSuggestionsWordsCount = 0;
 
 let previousText = "";
 
+let currentFolderStartTime: Date | null = null;
+let currentFolderName: string | null = null;
+
+function updateFolderTime() {
+  const currentFolderEndTime = new Date();
+  if (currentFolderStartTime && currentFolderName) {
+    const duration = currentFolderEndTime.getTime() - currentFolderStartTime.getTime();
+    // ส่งข้อมูลไปยังเซิร์ฟเวอร์
+    axios.post('https://betimes-social-listening-app.demotoday.net/api/v1/time-tracking',
+    {
+      apiKey: currentSecret,
+      folderName: currentFolderName,
+      duration: duration
+    }).then(response => {
+      console.log('Time tracked successfully.');
+    }).catch(error => {
+      console.error('Error tracking time:', error);
+    });
+    console.log('Folder: ' + currentFolderName + ' - Duration: ' + duration + ' ms');
+    
+  }
+  currentFolderStartTime = currentFolderEndTime;
+  currentFolderName = getCurrentFolderName();
+}
+
 function setSecretAPIKey(context: vscode.ExtensionContext) {
   vscode.window
   .showInputBox({
@@ -95,6 +120,15 @@ function registerSuggestionListener() {
   
 }
 
+function getCurrentFolderName(): string | null {
+  if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
+    return vscode.workspace.workspaceFolders[0].name;
+  }
+  return null;
+}
+
+vscode.workspace.onDidChangeWorkspaceFolders(updateFolderTime);
+
 export function activate(context: vscode.ExtensionContext) {
   console.log('GitHub Copilot Stats Extension is now active!');
 
@@ -123,6 +157,15 @@ export function activate(context: vscode.ExtensionContext) {
 	}
 	else {
 		console.log('GitHub Copilot Stats API Key: ' + userSecret);
+
+    if (vscode.workspace.workspaceFolders && vscode.workspace.workspaceFolders.length > 0) {
+      const currentFolder = vscode.workspace.workspaceFolders[0];
+      const folderName = currentFolder.name;
+
+      currentFolderStartTime = new Date();
+      currentFolderName = folderName;
+    }
+    
 		registerSuggestionListener();
 	}
 
@@ -135,5 +178,8 @@ export function activate(context: vscode.ExtensionContext) {
 }
 
 export function deactivate() {
+  
   console.log('GitHub Copilot Stats Extension is now inactive!');
+
+  updateFolderTime();
 }
